@@ -1,23 +1,43 @@
 {
-  "name": "template_v1",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch --env-file=.env index.js",
-    "prismastudio": "npx prisma studio --config ./prisma.config.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lumex-dev/template_v1.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/lumex-dev/template_v1/issues"
-  },
-  "homepage": "https://github.com/lumex-dev/template_v1#readme"
+    "name": "template_v1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "node --watch --env-file=.env app.js",
+        "prismastudio": "npx prisma studio --config ./prisma.config.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/lumex-dev/template_v1.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module",
+    "bugs": {
+        "url": "https://github.com/lumex-dev/template_v1/issues"
+    },
+    "homepage": "https://github.com/lumex-dev/template_v1#readme",
+    "dependencies": {
+        "@prisma/adapter-pg": "^7.8.0",
+        "@prisma/client": "^7.8.0",
+        "bcrypt": "^6.0.0",
+        "express": "^5.2.1",
+        "express-session": "^1.19.0",
+        "jsonwebtoken": "^9.0.3",
+        "passport": "^0.7.0",
+        "passport-jwt": "^4.0.1",
+        "passport-local": "^1.0.0",
+        "pg": "^8.21.0",
+        "react": "^19.2.6"
+    },
+    "devDependencies": {
+        "dotenv": "^17.4.2",
+        "eslint": "^10.4.1",
+        "jest": "^30.4.2",
+        "prettier": "^3.8.3",
+        "prisma": "^7.8.0"
+    }
 }
