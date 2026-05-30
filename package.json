@@ -1,0 +1,23 @@
+{
+  "name": "template_v1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch --env-file=.env index.js",
+    "prismastudio": "npx prisma studio --config ./prisma.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lumex-dev/template_v1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lumex-dev/template_v1/issues"
+  },
+  "homepage": "https://github.com/lumex-dev/template_v1#readme"
+}
