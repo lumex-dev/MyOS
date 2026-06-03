@@ -1,66 +1,57 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../utils/functions';
+import styles from './form.module.css';
 
-const SignUp = () => {
-    const [name, setName] = useState('');
+const LogIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
+        console.log('handle submit log in');
         event.preventDefault();
 
-        const response = await fetch('http://localhost:3000/signup', {
+        const response = await fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ email, password }),
         });
         const data = await response.json();
 
         if (response.ok) {
-            console.log('Sign up successful:', data);
-            navigate('/login');
+            login(data, navigate);
+            // localStorage.setItem('token', data.token);
+            // navigate('/home');
+            console.log('Log in successful_2:', data);
         } else {
-            console.log('Sign up failed:', data);
+            console.log('Log in failed:', data);
         }
     }
 
     return (
-        <main>
-            <h1>Create Account</h1>
+        <main className={styles.page}>
+            <h1>Log In</h1>
 
-            <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        placeholder="Name"
-                        required
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="email">Email</label>
+                    {/* <label htmlFor="email">Email</label> */}
                     <input
                         type="email"
                         id="email"
                         name="email"
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
-                        placeholder="name@example.com"
+                        placeholder="email@example.com"
                         required
                     />
                 </div>
 
                 <div>
-                    <label htmlFor="password">Password</label>
+                    {/* <label htmlFor="password">Password</label> */}
                     <input
                         type="password"
                         id="password"
@@ -71,10 +62,10 @@ const SignUp = () => {
                     />
                 </div>
 
-                <button type="submit">Create Account</button>
+                <button type="submit">Log In</button>
             </form>
         </main>
     );
 };
 
-export default SignUp;
+export default LogIn;

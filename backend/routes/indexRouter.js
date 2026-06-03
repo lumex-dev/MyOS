@@ -2,6 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import * as indexController from '../controllers/indexController.js';
+import { jwtAuth } from '../controllers/authMiddleware.js';
 
 const indexRouter = Router();
 
@@ -22,7 +23,7 @@ indexRouter.post('/login', (req, res, next) => {
             {
                 id: user.id,
                 email: user.email,
-                role: user.role,
+                // role: user.role,
             },
             process.env.JWT_SECRET,
             {
@@ -35,6 +36,16 @@ indexRouter.post('/login', (req, res, next) => {
             token,
         });
     })(req, res, next);
+});
+
+indexRouter.get('/me', jwtAuth, (req, res, next) => {
+    console.log(req);
+    res.json({
+        id: req.user.id,
+        email: req.user.email,
+        name: req.user.name,
+        role: req.user.role,
+    });
 });
 
 // indexRouter.post('/logout', (req, res, next) => {

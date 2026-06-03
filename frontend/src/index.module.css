@@ -1,0 +1,25 @@
+.appLayout {
+    /* max-width: 1080px; */
+    /*Layout*/
+    width: 100vw;
+    min-height: 100vh;
+
+    transition: 0.5s;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+
+    /*Design*/
+    background: #d5d1d1;
+}
+
+.appLayoutDark {
+    background: #222;
+    color: #fff;
+}
+
+.mainContent {
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* padding: 2rem; */
+}

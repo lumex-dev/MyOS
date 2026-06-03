@@ -1,24 +1,41 @@
 import App from './App.jsx';
-import SignUp from './pages/signUp.jsx';
-import LogIn from './pages/logIn.jsx';
-import Home from './pages/home.jsx';
+import SignUp from './pages/forms/signUp.jsx';
+import LogIn from './pages/forms/logIn.jsx';
+import Home from './pages/private/home.jsx';
+import StartPage from './pages/public/startPage.jsx';
+import About from './pages/public/about.jsx';
+import Profile from './pages/private/profile.jsx';
 
 const routes = [
     {
         path: '/',
         element: <App />,
-    },
-    {
-        path: '/signup',
-        element: <SignUp />,
-    },
-    {
-        path: '/login',
-        element: <LogIn />,
-    },
-    {
-        path: '/home',
-        element: <Home />,
+        children: [
+            {
+                index: true,
+                element: <StartPage />,
+            },
+            {
+                path: '/signup',
+                element: <SignUp />,
+            },
+            {
+                path: '/login',
+                element: <LogIn />,
+            },
+            {
+                path: '/about',
+                element: <About />,
+            },
+            {
+                path: '/home',
+                element: <Home />,
+            },
+            {
+                path: '/profile',
+                element: <Profile />,
+            },
+        ],
     },
 ];
 

@@ -1,3 +1,5 @@
+// main.jsx startet die React-Anwendung und verbindet sie mit dem Browser.
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
