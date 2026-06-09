@@ -9,6 +9,8 @@ coverage/
 .vite/
 .eslintcache
 
+AI_CONTEXT.md
+
 # Logs
 logs
 *.log
