@@ -18,7 +18,7 @@ enum UserRole {
 }
 
 model User {
-  id           Int    @id @default(autoincrement())
+  id           String @id @default(cuid())
   email        String @unique
   passwordHash String @map("password_hash")
 
@@ -26,8 +26,11 @@ model User {
 
   role UserRole @default(USER)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  tasks         Task[]
+  tagCategories TagCategory[]
+  tags          Tag[]
 
   @@map("users")
 }
@@ -38,3 +41,92 @@ model User {
 //   data      String
 //   expiresAt DateTime
 // }
+
+model Task {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String?
+  nextStep    String?
+
+  status   TaskStatus @default(PUSH)
+  priority Int?
+
+  dueDate                  DateTime?
+  waitUntil                DateTime?
+  remindPeriodDays         Int?
+  estimatedDurationMinutes Int?
+  completedAt              DateTime?
+
+  tags TaskTag[] // ← Relation zu TaskTag
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+enum TaskStatus {
+  DONE
+  PUSH
+  WAITING_FOR_INPUT
+  ON_HOLD
+  ARCHIVE
+}
+
+// Neu: Dynamische Tag-Kategorien
+model TagCategory {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name String // z.B. "AREA", "LOCATION", "CONTEXT", "CUSTOM_WORK"
+
+  tags Tag[] // Alle Tags dieser Kategorie
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+// Tag mit dynamischer Kategorie
+model Tag {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name       String
+  categoryId String? // ← Optional: kann zu Kategorie gehören
+  category   TagCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  color      String?
+
+  tasks TaskTag[] // ← Relation zu TaskTag
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([categoryId])
+}
+
+// Die Verbindungstabelle (Junction Table)
+model TaskTag {
+  id     String @id @default(cuid())
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String
+
+  createdAt DateTime @default(now())
+
+  @@unique([taskId, tagId])
+  @@index([taskId])
+  @@index([tagId])
+}

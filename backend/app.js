@@ -1,5 +1,6 @@
 import express from 'express';
 import indexRouter from './routes/indexRouter.js';
+import taskRouter from './routes/taskRouter.js';
 import './config/passport.js'; //loads config file
 import passport from 'passport'; //loads framework to get initialize function
 import cors from 'cors';
@@ -25,6 +26,7 @@ app.use(passport.initialize());
 // });
 
 app.use('/', indexRouter);
+app.use('/api/tasks', taskRouter);
 
 app.listen(PORT, (error) => {
     if (error) {

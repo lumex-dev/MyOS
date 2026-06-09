@@ -10,3 +10,11 @@
     flex-direction: column;
     gap: 20px;
 }
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}

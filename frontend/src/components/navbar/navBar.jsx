@@ -1,5 +1,9 @@
-import styles from './navBar.module.css';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+
+import { AuthContext } from '../../context/authContext';
+
+import styles from './navBar.module.css';
 
 import logo_light from '../../assets/logo-black.png';
 import logo_dark from '../../assets/logo-white.png';
@@ -10,15 +14,19 @@ import toggle_dark from '../../assets/day.png';
 import logIn_icon from '../../assets/login.svg';
 import logOut_icon from '../../assets/logout.svg';
 import { useNavigate } from 'react-router-dom';
-import { logout, isLoggedIn } from '../../utils/functions';
+// import { isLoggedIn, logout } from '../../utils/functions';
 
 const Navbar = ({ theme, setTheme }) => {
     const toggleMode = () => {
         theme === 'light' ? setTheme('dark') : setTheme('light');
     };
     const navigate = useNavigate();
+    const { user, loading, logout } = useContext(AuthContext);
 
-    const loggedIn = isLoggedIn();
+    if (loading) return <p>Loading Navbar...</p>;
+
+    const loggedIn = !!user; //isLoggedIn();
+    console.log('logged: ' + loggedIn);
 
     return (
         <nav className={`${styles.navbar} ${theme === 'dark' ? styles.navbarDark : ''}`}>
@@ -51,9 +59,16 @@ const Navbar = ({ theme, setTheme }) => {
             {loggedIn ? (
                 <>
                     <Link to="/profile">
-                        <button>Profile</button>
+                        <button>{user?.name || user?.email || 'Profile'}</button>
                     </Link>
-                    <button onClick={() => logout(navigate)}>Logout</button>
+                    <button
+                        onClick={() => {
+                            logout();
+                            navigate('/login');
+                        }}
+                    >
+                        Logout
+                    </button>
                 </>
             ) : (
                 <>

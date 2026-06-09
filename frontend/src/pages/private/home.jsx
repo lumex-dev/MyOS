@@ -1,36 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getToken, logout } from '../../utils/functions';
+// import { useEffect, useState, useContext } from 'react';
+import { useContext } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import { getToken, logout } from '../../utils/functions';
+import { AuthContext } from '../../context/authContext.jsx';
 
 function Home() {
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
+    // console.log(user);
+    // const [user, setUser] = useState(null);
+    // const navigate = useNavigate();
 
-    useEffect(() => {
-        async function loadUser() {
-            // const token = localStorage.getItem('token');
-            const token = getToken();
+    // useEffect(() => {
+    //     async function loadUser() {
+    //         // const token = localStorage.getItem('token');
+    //         const token = getToken();
 
-            if (!token) {
-                navigate('/');
-                return;
-            }
+    //         if (!token) {
+    //             navigate('/');
+    //             return;
+    //         }
 
-            const response = await fetch('http://localhost:3000/me', {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+    //         const response = await fetch('http://localhost:3000/me', {
+    //             headers: { Authorization: `Bearer ${token}` },
+    //         });
 
-            if (!response.ok) {
-                logout(navigate);
-                // localStorage.removeItem('token');
-                // navigate('/login');
-                return;
-            }
-            const data = await response.json();
-            setUser(data);
-        }
-        loadUser();
-    }, [navigate]);
+    //         if (!response.ok) {
+    //             logout(navigate);
+    //             // localStorage.removeItem('token');
+    //             // navigate('/login');
+    //             return;
+    //         }
+    //         const data = await response.json();
+    //         setUser(data);
+    //     }
+    //     loadUser();
+    // }, [navigate]);
 
     if (!user) {
         return <p>Loading...</p>;

@@ -130,6 +130,48 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  nextStep: 'nextStep',
+  status: 'status',
+  priority: 'priority',
+  dueDate: 'dueDate',
+  waitUntil: 'waitUntil',
+  remindPeriodDays: 'remindPeriodDays',
+  estimatedDurationMinutes: 'estimatedDurationMinutes',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TagCategoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TagScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  categoryId: 'categoryId',
+  color: 'color',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TaskTagScalarFieldEnum = {
+  id: 'id',
+  taskId: 'taskId',
+  tagId: 'tagId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -149,8 +191,20 @@ exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN'
 };
 
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  DONE: 'DONE',
+  PUSH: 'PUSH',
+  WAITING_FOR_INPUT: 'WAITING_FOR_INPUT',
+  ON_HOLD: 'ON_HOLD',
+  ARCHIVE: 'ARCHIVE'
+};
+
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Task: 'Task',
+  TagCategory: 'TagCategory',
+  Tag: 'Tag',
+  TaskTag: 'TaskTag'
 };
 
 /**

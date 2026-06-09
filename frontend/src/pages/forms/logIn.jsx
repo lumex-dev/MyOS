@@ -1,40 +1,53 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../../utils/functions';
+// import { login } from '../../utils/functions';
 import styles from './form.module.css';
+import { AuthContext } from '../../context/authContext';
 
 const LogIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
         console.log('handle submit log in');
         event.preventDefault();
+        setError('');
+        setIsLoading(true);
 
-        const response = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-        const data = await response.json();
+        try {
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await response.json();
 
-        if (response.ok) {
-            login(data, navigate);
-            // localStorage.setItem('token', data.token);
-            // navigate('/home');
+            if (!response.ok) {
+                setError(data.message || 'login failed');
+                return;
+            }
+
+            await login(data.token);
+            navigate('/home');
             console.log('Log in successful_2:', data);
-        } else {
-            console.log('Log in failed:', data);
+        } catch (err) {
+            setError('server not reachable' + err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     return (
         <main className={styles.page}>
             <h1>Log In</h1>
+            {error && <p className={styles.error}>{error}</p>}
 
             <form className={styles.form} onSubmit={handleSubmit}>
                 <div>
@@ -56,13 +69,16 @@ const LogIn = () => {
                         type="password"
                         id="password"
                         name="password"
+                        placeholder="password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         required
                     />
                 </div>
 
-                <button type="submit">Log In</button>
+                <button type="submit" disabled={isLoading}>
+                    {isLoading ? 'Logging in...' : 'Log in'}
+                </button>
             </form>
         </main>
     );

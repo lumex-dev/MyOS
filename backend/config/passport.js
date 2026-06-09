@@ -19,13 +19,17 @@ passport.use(
                 },
             });
             if (!user) {
-                return done(null, false, { message: 'username not existing' });
+                return done(null, false, {
+                    message: 'Invalid email or password // username not existing',
+                });
             }
 
             const match = await bcrypt.compare(password, user.passwordHash);
 
             if (!match) {
-                return done(null, false, { message: 'incorrect password' });
+                return done(null, false, {
+                    message: 'Invalid email or password // incorrect password',
+                });
             }
 
             return done(null, user);
