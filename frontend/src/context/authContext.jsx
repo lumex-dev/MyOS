@@ -12,6 +12,7 @@ export function AuthProvider({ children }) {
             const data = await fetchUserFromApi();
             setUser(data);
         } catch (err) {
+            console.error(err);
             setUser(null);
         } finally {
             setLoading(false);
