@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './form.module.css';
+import { useAuth } from '../../hooks/useAuth';
 
 const SignUp = () => {
+    //functions
+    const { signup } = useAuth();
     //data
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -21,43 +24,23 @@ const SignUp = () => {
         setSuccess('');
 
         try {
-            const response = await fetch('http://localhost:3000/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email, password }),
-            });
-            const data = await response.json();
+            const data = await signup(name, email, password);
 
-            if (!response.ok) {
-                setError(data.message || 'sign up failed');
-                return;
-            }
-
-            console.log('Sign up successful:', data);
-            // navigate('/login');
-            setSuccess(data.message || 'Account created successfully. You can now log in.');
+            setSuccess(true); // setSuccess(data.message || 'Account created successfully. You can now log in.');
             setName('');
             setEmail('');
             setPassword('');
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
+
+            console.log('Sign up successful:', data);
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
             setError('server not reachable' + err);
         } finally {
             setIsLoading(false);
         }
-
-        // if (response.ok) {
-        //     console.log('Sign up successful:', data);
-        //     navigate('/login');
-        // } else {
-        //     // setError(data);
-        //     // console.log('Sign up failed:', data);
-        // }
     }
 
     return (

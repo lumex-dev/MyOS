@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { login } from '../../utils/functions';
 import styles from './form.module.css';
-import { AuthContext } from '../../context/authContext';
+// import { AuthContext } from '../../context/authContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const LogIn = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +11,8 @@ const LogIn = () => {
 
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { login } = useContext(AuthContext);
+    // const { login } = useContext(AuthContext);
+    const { loginUser } = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(event) {
@@ -20,21 +22,9 @@ const LogIn = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-            const data = await response.json();
+            const data = await loginUser(email, password);
 
-            if (!response.ok) {
-                setError(data.message || 'login failed');
-                return;
-            }
-
-            await login(data.token);
+            // await login(data.token);
             navigate('/home');
             console.log('Log in successful_2:', data);
         } catch (err) {

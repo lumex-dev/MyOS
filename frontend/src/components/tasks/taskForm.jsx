@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { getToken } from '../../utils/functions';
+// import { createTask } from '../../hooks/useTasks.jsx';
 
 function TaskForm({ onTaskCreated }) {
+    //create Task import
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
@@ -11,36 +12,27 @@ function TaskForm({ onTaskCreated }) {
     async function handleSubmit(e) {
         e.preventDefault();
         setLoading(true);
-        const token = getToken();
 
-        const response = await fetch('http://localhost:3000/api/tasks', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
+        try {
+            const taskData = {
                 title,
                 description,
                 dueDate: dueDate ? new Date(dueDate).toISOString() : null,
                 priority: parseInt(priority),
                 tags: [],
-            }),
-        });
+            };
+            await onTaskCreated(taskData);
 
-        if (response.ok) {
-            const data = await response.json();
-            onTaskCreated(data.task);
-            //reset form
             setTitle('');
             setDescription('');
             setDueDate('');
             setPriority(3);
-        } else {
-            console.error('Failed to create task');
+        } catch (err) {
+            console.error('Error creating task:', err);
+            alert('Failed to create task');
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     return (
