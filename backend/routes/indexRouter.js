@@ -34,12 +34,13 @@ indexRouter.post('/login', (req, res, next) => {
         return res.json({
             message: 'Login successful',
             token,
+            user, //xyz ist das gut hier? - ja, damit kannst du im Frontend die Userdaten direkt nach dem Login nutzen, ohne nochmal einen Request an /me schicken zu müssen
         });
     })(req, res, next);
 });
 
-indexRouter.get('/me', jwtAuth, (req, res, next) => {
-    console.log(req);
+indexRouter.get('/me', jwtAuth, (req, res) => {
+    // console.log(req);
     res.json({
         id: req.user.id,
         email: req.user.email,
